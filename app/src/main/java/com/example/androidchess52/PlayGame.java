@@ -3,6 +3,8 @@ package com.example.androidchess52;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +17,9 @@ public class PlayGame extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        return;
+        ImageButton selectedPiece = (ImageButton) view;
+        String location = view.getResources().getResourceName(selectedPiece.getId());
+        System.out.println(location);
     }
 
 }
