@@ -71,7 +71,7 @@ public class PlayGame extends AppCompatActivity {
             firstSelected = (ImageButton) view;
             String location = view.getResources().getResourceName(firstSelected.getId());
             starting = location.substring(location.length()-2);
-            if (firstSelected.getDrawable()!=null && !game.getPieceAt(game.position(starting)).color.equalsIgnoreCase(game.currentPlayer)) {
+            if (firstSelected.getDrawable()==null || !game.getPieceAt(game.position(starting)).color.equalsIgnoreCase(game.currentPlayer)) {
                 firstSelected = null;
                 Toast.makeText(getApplicationContext(), "Please select a valid piece to move.", Toast.LENGTH_SHORT).show();
             }
@@ -107,6 +107,10 @@ public class PlayGame extends AppCompatActivity {
             game.doCastle(move);
             game.makeMove(move);
         }
+        firstSelected = null;
+        starting = null;
+        lastSelected = null;
+        ending = null;
         displayBoard(game.pieces);
     }
 
