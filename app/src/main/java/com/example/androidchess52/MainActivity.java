@@ -18,4 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, PlayGame.class);
         startActivity(i);
     }
+
+    public void recordScreen(View view) {
+        Intent i = new Intent(this, RecordController.class);
+        startActivity(i);
+    }
 }
