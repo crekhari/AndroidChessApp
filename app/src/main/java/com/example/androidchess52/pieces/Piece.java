@@ -1,11 +1,10 @@
 package com.example.androidchess52.pieces;
 
-import android.graphics.Point;
-
 import com.example.androidchess52.board.Board;
 
 import java.io.Serializable;
 import java.util.*;
+
 
 /**
  * This abstract super class defines common methods that all the pieces
