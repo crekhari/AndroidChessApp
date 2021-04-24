@@ -1,12 +1,11 @@
 package com.example.androidchess52.board;
 
-import android.graphics.Point;
-
 import com.example.androidchess52.pieces.Bishop;
 import com.example.androidchess52.pieces.King;
 import com.example.androidchess52.pieces.Knight;
 import com.example.androidchess52.pieces.Pawn;
 import com.example.androidchess52.pieces.Piece;
+import com.example.androidchess52.pieces.Point;
 import com.example.androidchess52.pieces.Queen;
 import com.example.androidchess52.pieces.Rook;
 
@@ -235,6 +234,42 @@ public class Board implements Serializable {
                 return 7;
         }
         return -1;
+    }
+
+    public String numberToLetter(int i) {
+        switch (i) {
+            case 0:
+                return "a";
+            case 1:
+                return "b";
+            case 2:
+                return "c";
+            case 3:
+                return "d";
+            case 4:
+                return "e";
+            case 5:
+                return "f";
+            case 6:
+                return "g";
+            case 7:
+                return "h";
+        }
+        return null;
+    }
+
+    public String position(Point point) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.numberToLetter(point.y));
+        sb.append(8-point.x);
+        return sb.toString();
+    }
+
+    public Point position(String string) {
+        Point p = new Point();
+        p.y = this.letterToNumber(string.substring(0,1));
+        p.x = 7-(Integer.parseInt(string.substring(1,2)))+1;
+        return p;
     }
 
 //------------------------------------------------------move-------------------------------------------------------

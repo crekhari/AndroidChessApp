@@ -1,7 +1,5 @@
 package com.example.androidchess52.pieces;
 
-import android.graphics.Point;
-
 import com.example.androidchess52.board.Board;
 
 import java.util.ArrayList;
