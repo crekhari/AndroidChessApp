@@ -461,6 +461,14 @@
             android:gravity="center_vertical">
 
             <Button
+                android:id="@+id/resign"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:onClick="onResignClick"
+                android:text="Resign" />
+
+            <Button
                 android:id="@+id/draw"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
@@ -484,13 +492,7 @@
                 android:onClick="onUndoClick"
                 android:text="Undo" />
 
-            <Button
-                android:id="@+id/resign"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:onClick="onResignClick"
-                android:text="Resign" />
+
 
         </LinearLayout>
 
