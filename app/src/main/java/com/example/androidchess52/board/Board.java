@@ -37,6 +37,8 @@ public class Board implements Serializable {
 
     public Board previousMove = null;
 
+    public ArrayList<Point []> record = new ArrayList<Point []>();
+
     /**
      * Creates a Board object that initializes the
      * pieces on the board as well as makes the current
@@ -384,9 +386,16 @@ public class Board implements Serializable {
                 currentPlayer = "Black";
             else
                 currentPlayer = "White";
+            this.record.add(points);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    public void printRecord() {
+        for (Point[] move: this.record) {
+            System.out.println(move[0] + " " + move[1]);
         }
     }
 
@@ -402,7 +411,7 @@ public class Board implements Serializable {
             this.kingInCheck = previousMove.kingInCheck;
             //to fix undo, just make this.previous move null!!!!!!!!!!!!
             this.previousMove = previousMove.previousMove;
-            this.drawBoard();
+            this.record.remove(this.record.size()-1);
         }
     }
 
@@ -424,6 +433,7 @@ public class Board implements Serializable {
         Point[] aimove = new Point[2];
         aimove[0] = random.location;
         aimove[1] = randomMoves.get(0);
+        this.record.add(aimove);
 
         return aimove;
 
@@ -533,6 +543,7 @@ public class Board implements Serializable {
                 currentPlayer = "Black";
             else
                 currentPlayer = "White";
+            this.record.add(points);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -616,6 +627,7 @@ public class Board implements Serializable {
                 currentPlayer = "Black";
             else
                 currentPlayer = "White";
+            this.record.add(points);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

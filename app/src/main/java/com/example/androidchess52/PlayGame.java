@@ -26,7 +26,7 @@ public class PlayGame extends AppCompatActivity {
     public String starting;
     public String ending;
     public Button resign, undo, ai, draw;
-
+    public Boolean undoEnabled;
 
 
     @Override
@@ -41,12 +41,20 @@ public class PlayGame extends AppCompatActivity {
         draw = (Button) findViewById(R.id.draw);
 
         //game.drawBoard();
+        this.undoEnabled = false;
+        undo.setEnabled(undoEnabled);
         displayBoard(game.pieces);
     }
 
     public void onUndoClick(View view) {
-        game.undoMove();
-        displayBoard(game.pieces);
+        if (undoEnabled) {
+            game.undoMove();
+            displayBoard(game.pieces);
+            this.undoEnabled = false;
+            undo.setEnabled(undoEnabled);
+        } else {
+            Toast.makeText(getApplicationContext(), "You can only undo the last move!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onResignClick(View view) {
@@ -58,6 +66,8 @@ public class PlayGame extends AppCompatActivity {
     public void onAIClick(View view) {
         Point[] move = game.aiMove();
         makeMove(move);
+        this.undoEnabled = true;
+        undo.setEnabled(undoEnabled);
     }
 
     public void onDrawClick(View view) {
@@ -97,21 +107,31 @@ public class PlayGame extends AppCompatActivity {
     public void makeMove(Point[] move) {
         if (game.checkPromotion(move)) {
             game.promotion(new Queen(game.currentPlayer.toLowerCase(), 0, 0), move);
-            displayBoard(game.pieces);
-        }
-        game.firstMove(move);
-        game.enpassant(move);
-        if (game.checkEnpassant(move)) {
-            game.doEnpassant(move);
+            //displayBoard(game.pieces);
         } else {
-            game.doCastle(move);
-            game.makeMove(move);
+            game.firstMove(move);
+            game.enpassant(move);
+            if (game.checkEnpassant(move)) {
+                game.doEnpassant(move);
+            } else {
+                game.doCastle(move);
+                game.makeMove(move);
+            }
         }
         firstSelected = null;
         starting = null;
         lastSelected = null;
         ending = null;
         displayBoard(game.pieces);
+        this.undoEnabled = true;
+        undo.setEnabled(undoEnabled);
+        game.printRecord();
+        if (game.checkmate()) {
+            String winner = (game.currentPlayer.equalsIgnoreCase("black")) ? "White":"Black";
+            Toast.makeText(getApplicationContext(), winner + " has won. Game has ended.", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+        }
     }
 
     public void displayBoard(ArrayList<Piece> pieces) {
