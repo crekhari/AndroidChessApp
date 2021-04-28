@@ -134,6 +134,7 @@ public class PlayGame extends AppCompatActivity {
         }
     }
 
+
     public void displayBoard(ArrayList<Piece> pieces) {
         clearBoard();
         for (int i = 0; i<8; i++) {
