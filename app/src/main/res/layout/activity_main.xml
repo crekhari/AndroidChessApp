@@ -30,6 +30,14 @@
             android:onClick="recordScreen"
             android:text="Record" />
 
+        <Button
+            android:id="@+id/viewgametrial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:onClick="viewGame"
+            android:text="Test" />
+
 
     </TableRow>
 
