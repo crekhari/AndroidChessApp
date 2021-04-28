@@ -21,23 +21,24 @@ import com.example.androidchess52.record.Record;
 public class RecordController extends AppCompatActivity {
 
     public ArrayList<Record> recordList;
+    ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record);
         final ListView list = findViewById(R.id.list);
-        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList = new ArrayList<>();
         arrayList.add("GO BACK TO PREVIOUS SCREEN");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
         list.setAdapter(arrayAdapter);
         try {
-            this.recordList.add(new Record("GO BACK TO PREVIOUS SCREEN"));
+            //this.recordList.add(new Record("GO BACK TO PREVIOUS SCREEN"));
         } catch (Exception e) {
             System.out.println("exception");
             if (e instanceof EOFException)
                 this.recordList = new ArrayList<Record>();
-            this.recordList.add(new Record("GO BACK TO PREVIOUS SCREEN"));
+
         }
 
 
@@ -46,7 +47,12 @@ public class RecordController extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String clickedItem=(String) list.getItemAtPosition(position);
                 Toast.makeText(RecordController.this,clickedItem,Toast.LENGTH_LONG).show();
+                System.out.println(clickedItem);
             }
         });
+    }
+
+    public void addRecording(Record r){
+        recordList.add(r);
     }
 }
