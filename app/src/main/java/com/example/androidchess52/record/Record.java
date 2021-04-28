@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Record {
     String name;
-    //ArrayList<Record> allRecords = new ArrayList<Record>();
+
 
     public Record(String name){
         this.name = name;
@@ -16,7 +16,5 @@ public class Record {
         }
     }
 
-    /*public ArrayList<Record> getAllRecords(){
 
-    }*/
 }

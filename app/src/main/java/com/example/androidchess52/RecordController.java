@@ -34,9 +34,10 @@ public class RecordController extends AppCompatActivity {
         try {
             this.recordList.add(new Record("GO BACK TO PREVIOUS SCREEN"));
         } catch (Exception e) {
-            System.out.println("eof exception");
+            System.out.println("exception");
             if (e instanceof EOFException)
                 this.recordList = new ArrayList<Record>();
+            this.recordList.add(new Record("GO BACK TO PREVIOUS SCREEN"));
         }
 
 
