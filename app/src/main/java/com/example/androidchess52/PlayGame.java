@@ -1,12 +1,14 @@
 package com.example.androidchess52;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +17,9 @@ import com.example.androidchess52.board.Board;
 import com.example.androidchess52.pieces.Piece;
 import com.example.androidchess52.pieces.Point;
 import com.example.androidchess52.pieces.Queen;
+import com.example.androidchess52.record.Record;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlayGame extends AppCompatActivity {
@@ -27,6 +31,7 @@ public class PlayGame extends AppCompatActivity {
     public String ending;
     public Button resign, undo, ai, draw;
     public Boolean undoEnabled;
+    public ArrayList<Record> recordList= new ArrayList<Record>();
 
 
     @Override
@@ -70,9 +75,12 @@ public class PlayGame extends AppCompatActivity {
         undo.setEnabled(undoEnabled);
     }
 
-    public void onDrawClick(View view) {
+    public void onDrawClick(View view) throws IOException {
         Toast.makeText(getApplicationContext(), game.currentPlayer + " has called a draw. Game has ended.", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, MainActivity.class);
+        Record r = new Record("hi", new ArrayList<Point[]>());
+        recordList.add(r);
+        //Serialize.writeApp(recordList, this);
         startActivity(i);
     }
 
@@ -129,6 +137,34 @@ public class PlayGame extends AppCompatActivity {
         if (game.checkmate()) {
             String winner = (game.currentPlayer.equalsIgnoreCase("black")) ? "White":"Black";
             Toast.makeText(getApplicationContext(), winner + " has won. Game has ended.", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Title");
+
+            // Set up the input
+            final EditText input = new EditText(this);
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            builder.setView(input);
+
+            // Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String m_Text = input.getText().toString();
+                    Record r = new Record(m_Text, new ArrayList<Point[]>());
+
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         }
