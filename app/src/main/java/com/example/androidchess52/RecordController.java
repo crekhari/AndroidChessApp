@@ -1,58 +1,99 @@
 package com.example.androidchess52;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import android.renderscript.Element;
+import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.EOFException;
+import java.io.IOException;
 import java.util.ArrayList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.androidchess52.pieces.Point;
 import com.example.androidchess52.record.Record;
+import com.example.androidchess52.record.Serialize;
 
 public class RecordController extends AppCompatActivity {
 
     public ArrayList<Record> recordList;
     ArrayList<String> arrayList;
+    ArrayAdapter<String> arrayAdapter;
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record);
-        final ListView list = findViewById(R.id.list);
+        list = findViewById(R.id.list);
         arrayList = new ArrayList<>();
-        arrayList.add("GO BACK TO PREVIOUS SCREEN");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
-        list.setAdapter(arrayAdapter);
-        try {
-            //this.recordList.add(new Record("GO BACK TO PREVIOUS SCREEN"));
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
+        Record test = new Record("Test Recording", new ArrayList<Point[]>());
+        arrayList.add(test.getName());
+        updateListView();
+
+        try{
+            recordList = Serialize.readApp(this);
+        } catch (Exception e){
+            e.printStackTrace();
+            recordList = new ArrayList<Record>();
+        }
+        String temppy = recordList.get(0).getName();
+        arrayList.add(temppy);
+        updateListView();
+        /*try {
         } catch (Exception e) {
             System.out.println("exception");
             if (e instanceof EOFException)
                 this.recordList = new ArrayList<Record>();
 
-        }
-
-
+        }*/
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String clickedItem=(String) list.getItemAtPosition(position);
                 Toast.makeText(RecordController.this,clickedItem,Toast.LENGTH_LONG).show();
                 System.out.println(clickedItem);
+                startTransition(view, clickedItem);
+
             }
         });
     }
 
-    public void addRecording(Record r){
+    private void startTransition(View view, String name) {
+        String recordName = name;
+        Intent i = new Intent(RecordController.this, RecordGame.class);
+        startActivity(i);
+
+    }
+
+    public ArrayList<Record> getRecordList(){
+        return recordList;
+    }
+
+
+    public void addRecording(String name, ArrayList<Point[]> moves){
+        Record r = new Record(name, moves);
         recordList.add(r);
+        arrayList.add(r.getName());
+        updateListView();
+    }
+
+    public void updateListView(){
+        list.setAdapter(arrayAdapter);
     }
 }
