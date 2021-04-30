@@ -3,6 +3,7 @@ package com.example.androidchess52.record;
 import com.example.androidchess52.pieces.Point;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Record implements Serializable {
@@ -22,6 +23,7 @@ public class Record implements Serializable {
     public String getName(){
         return name;
     }
+
 
 
 }
