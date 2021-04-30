@@ -29,12 +29,12 @@ public class Serialize extends AppCompatActivity implements Serializable {
         oos.close();
         fos.close();
         System.out.println("I did it?");
-}
+    }
 
-public static ArrayList<Record> readApp(Context context) throws IOException, ClassNotFoundException {
-    ObjectInputStream ois = new ObjectInputStream(
-            new FileInputStream(new File(context.getFilesDir(), storeFile)));
-    ArrayList<Record> games = (ArrayList<Record>)ois.readObject();
-    return games;
-}
+    public static ArrayList<Record> readApp(Context context) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(new File(context.getFilesDir(), storeFile)));
+        ArrayList<Record> games = (ArrayList<Record>)ois.readObject();
+        return games;
+    }
 }
