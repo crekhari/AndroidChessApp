@@ -15,6 +15,7 @@ import android.content.Intent;
 
 import com.example.androidchess52.pieces.Point;
 import com.example.androidchess52.record.Record;
+import com.example.androidchess52.record.Serialize;
 
 public class RecordController extends AppCompatActivity {
 
@@ -27,12 +28,6 @@ public class RecordController extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record);
-        list = findViewById(R.id.list);
-        arrayList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
-        Record test = new Record("Test Recording", new ArrayList<Point[]>());
-        arrayList.add(test.getName());
-        updateListView();
 
         try{
             recordList = Serialize.readApp(this);
@@ -40,16 +35,16 @@ public class RecordController extends AppCompatActivity {
             e.printStackTrace();
             recordList = new ArrayList<Record>();
         }
-        String temppy = recordList.get(0).getName();
-        arrayList.add(temppy);
-        updateListView();
-        /*try {
-        } catch (Exception e) {
-            System.out.println("exception");
-            if (e instanceof EOFException)
-                this.recordList = new ArrayList<Record>();
 
-        }*/
+        System.out.println(this.recordList.size());
+
+        list = findViewById(R.id.list);
+        arrayList = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
+
+        addGameNames();
+        updateListView();
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -63,10 +58,19 @@ public class RecordController extends AppCompatActivity {
     }
 
     private void startTransition(View view, String name) {
-        String recordName = name;
         Intent i = new Intent(RecordController.this, RecordGame.class);
+        Record record = getRecord(name);
         startActivity(i);
 
+    }
+
+    public Record getRecord(String name) {
+        for (Record r: this.recordList) {
+            if (r.getName().trim().equalsIgnoreCase(name)) {
+                return r;
+            }
+        }
+        return null;
     }
 
     public ArrayList<Record> getRecordList(){
@@ -79,6 +83,12 @@ public class RecordController extends AppCompatActivity {
         recordList.add(r);
         arrayList.add(r.getName());
         updateListView();
+    }
+
+    public void addGameNames() {
+        for (Record r: this.recordList) {
+            arrayList.add(r.getName());
+        }
     }
 
     public void updateListView(){
