@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import android.content.Intent;
 
@@ -48,7 +50,7 @@ public class RecordController extends AppCompatActivity {
         recordList.add(new Record("e", new ArrayList<Point[]>()));
         recordList.add(new Record("t", new ArrayList<Point[]>()));
         recordList.add(new Record("z", new ArrayList<Point[]>()));
-        recordList.add(new Record("b", new ArrayList<Point[]>()));
+
 
 
         //list.setAdapter(arrayAdapter);
@@ -71,7 +73,7 @@ public class RecordController extends AppCompatActivity {
     public void sortByName(View view){
         ArrayList<String> recordListString = new ArrayList<String>();
         for(Record r: recordList){
-            recordListString.add(r.getName());
+            recordListString.add(r.getName() + " -- " + r.date);
         }
         Collections.sort(recordListString, String.CASE_INSENSITIVE_ORDER);
 
@@ -84,7 +86,18 @@ public class RecordController extends AppCompatActivity {
     }
 
     public void sortByDate(View view){
+        ArrayList<String> recordListString = new ArrayList<String>();
 
+        ArrayList<Date> date=new ArrayList<>();
+        for(Record r: recordList){
+            date.add(r.date);
+        }
+        Collections.sort(recordList, Comparator.comparing(Record::getDate));
+        for(Record r: recordList){
+            recordListString.add(r.getName() + " -- " + r.date);
+        }
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recordListString);
+        updateListView();
     }
 
     private void startTransition(View view, String name) {
@@ -117,7 +130,7 @@ public class RecordController extends AppCompatActivity {
 
     public void addGameNames() {
         for (Record r: this.recordList) {
-            arrayList.add(r.getName());
+            arrayList.add(r.getName() + " -- " +r.date);
         }
     }
 
