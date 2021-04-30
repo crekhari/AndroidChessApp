@@ -3,6 +3,7 @@ package com.example.androidchess52;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import java.util.Arrays;
 //import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import android.content.Intent;
 
 import com.example.androidchess52.pieces.Point;
@@ -41,7 +44,14 @@ public class RecordController extends AppCompatActivity {
         list = findViewById(R.id.list);
         arrayList = new ArrayList<>();
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
+        recordList.add(new Record("a", new ArrayList<Point[]>()));
+        recordList.add(new Record("e", new ArrayList<Point[]>()));
+        recordList.add(new Record("t", new ArrayList<Point[]>()));
+        recordList.add(new Record("z", new ArrayList<Point[]>()));
+        recordList.add(new Record("b", new ArrayList<Point[]>()));
 
+
+        //list.setAdapter(arrayAdapter);
         addGameNames();
         updateListView();
 
@@ -55,6 +65,26 @@ public class RecordController extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    public void sortByName(View view){
+        ArrayList<String> recordListString = new ArrayList<String>();
+        for(Record r: recordList){
+            recordListString.add(r.getName());
+        }
+        Collections.sort(recordListString, String.CASE_INSENSITIVE_ORDER);
+
+        for(String s: recordListString){
+            System.out.println(s);
+        }
+
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recordListString);
+        updateListView();
+    }
+
+    public void sortByDate(View view){
+
     }
 
     private void startTransition(View view, String name) {
@@ -94,4 +124,6 @@ public class RecordController extends AppCompatActivity {
     public void updateListView(){
         list.setAdapter(arrayAdapter);
     }
+
+
 }

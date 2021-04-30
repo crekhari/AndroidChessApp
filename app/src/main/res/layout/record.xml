@@ -5,12 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RecordController">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <Button
             android:id="@+id/BackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back Button"
             tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/SortByName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort By Name"
+            android:onClick="sortByName"
+            tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/SortByDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort By Date"
+            android:onClick="sortByDate"
+            tools:ignore="MissingConstraints" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"
