@@ -5,34 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RecordController">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <Button
-            android:id="@+id/BackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back Button"
-            tools:ignore="MissingConstraints" />
-        <Button
-            android:id="@+id/SortByName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sort By Name"
-            android:onClick="sortByName"
-            tools:ignore="MissingConstraints" />
-        <Button
-            android:id="@+id/SortByDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sort By Date"
-            android:onClick="sortByDate"
-            tools:ignore="MissingConstraints" />
+            android:layout_height="64dp"
+            android:gravity="center_vertical"
+            tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/BackButton"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:onClick="goBack"
+                    android:layout_weight="1"
+                    android:text="Back" />
+
+                <Button
+                    android:id="@+id/SortByName"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:onClick="sortByName"
+                    android:text="Sort By Name" />
+
+                <Button
+                    android:id="@+id/SortByDate"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:onClick="sortByDate"
+                    android:text="Sort By Date" />
+
         </LinearLayout>
+
         <LinearLayout
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"
-            android:paddingTop="40dp"
+            android:paddingTop="80dp"
             android:orientation = "vertical">
                 <ListView
                     android:id = "@+id/list"
@@ -41,3 +50,33 @@
         </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <Button
+        android:id="@+id/BackButton"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:text="Back"
+        tools:ignore="MissingConstraints" />
+    <Button
+        android:id="@+id/SortByName"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:text="Sort By Name"
+        android:onClick="sortByName"
+        tools:ignore="MissingConstraints" />
+    <Button
+        android:id="@+id/SortByDate"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:text="Sort By Date"
+        android:onClick="sortByDate"
+        tools:ignore="MissingConstraints" />
+    </LinearLayout>
+-->
