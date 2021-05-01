@@ -46,10 +46,10 @@ public class RecordController extends AppCompatActivity {
         list = findViewById(R.id.list);
         arrayList = new ArrayList<>();
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
-        recordList.add(new Record("a", new ArrayList<Point[]>()));
-        recordList.add(new Record("e", new ArrayList<Point[]>()));
-        recordList.add(new Record("t", new ArrayList<Point[]>()));
-        recordList.add(new Record("z", new ArrayList<Point[]>()));
+        //recordList.add(new Record("a", new ArrayList<Point[]>()));
+        //recordList.add(new Record("e", new ArrayList<Point[]>()));
+        //recordList.add(new Record("t", new ArrayList<Point[]>()));
+        //recordList.add(new Record("z", new ArrayList<Point[]>()));
 
 
 
@@ -73,7 +73,7 @@ public class RecordController extends AppCompatActivity {
     public void sortByName(View view){
         ArrayList<String> recordListString = new ArrayList<String>();
         for(Record r: recordList){
-            recordListString.add(r.getName() + " -- " + r.date);
+            recordListString.add(r.toString());
         }
         Collections.sort(recordListString, String.CASE_INSENSITIVE_ORDER);
 
@@ -94,26 +94,22 @@ public class RecordController extends AppCompatActivity {
         }
         Collections.sort(recordList, Comparator.comparing(Record::getDate));
         for(Record r: recordList){
-            recordListString.add(r.getName() + " -- " + r.date);
+            recordListString.add(r.toString());
         }
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recordListString);
         updateListView();
     }
 
-    private void startTransition(View view, String name) {
-        Intent i = new Intent(RecordController.this, RecordGame.class);
-        Record record = getRecord(name);
+    public void goBack(View view) {
+        Intent i = new Intent(RecordController.this, MainActivity.class);
         startActivity(i);
-
     }
 
-    public Record getRecord(String name) {
-        for (Record r: this.recordList) {
-            if (r.getName().trim().equalsIgnoreCase(name)) {
-                return r;
-            }
-        }
-        return null;
+    private void startTransition(View view, String name) {
+        Intent i = new Intent(RecordController.this, RecordGame.class);
+        i.putExtra("game", name);
+        startActivity(i);
+
     }
 
     public ArrayList<Record> getRecordList(){
@@ -121,16 +117,16 @@ public class RecordController extends AppCompatActivity {
     }
 
 
-    public void addRecording(String name, ArrayList<Point[]> moves){
+    /*public void addRecording(String name, ArrayList<Point[]> moves){
         Record r = new Record(name, moves);
         recordList.add(r);
         arrayList.add(r.getName());
         updateListView();
-    }
+    }*/
 
     public void addGameNames() {
         for (Record r: this.recordList) {
-            arrayList.add(r.getName() + " -- " +r.date);
+            arrayList.add(r.toString());
         }
     }
 

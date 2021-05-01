@@ -1,8 +1,14 @@
 package com.example.androidchess52;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,25 +16,63 @@ import com.example.androidchess52.board.Board;
 import com.example.androidchess52.pieces.Piece;
 import com.example.androidchess52.pieces.Point;
 import com.example.androidchess52.pieces.Queen;
+import com.example.androidchess52.record.Record;
+import com.example.androidchess52.record.Serialize;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class RecordGame extends AppCompatActivity {
 
     public ArrayList<Point[]> moves;
+    public ArrayList<Record> recordList;
     public Board game;
-    int pointer;
+    public int pointer;
+    public int ending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record_game);
 
-        moves = new ArrayList<Point[]>();
+        try{
+            recordList = Serialize.readApp(this);
+        } catch (Exception e){
+            e.printStackTrace();
+            recordList = new ArrayList<Record>();
+        }
+
+        System.out.println("the size of the record list is: " + this.recordList.size());
+
+        String name = getIntent().getExtras().getString("game");
+
+        String[] tokens = name.split("--");
+        System.out.println(tokens[0]);
+
+        Record record = getRecord(tokens[0]);
+        this.moves = record.getMovesArrayList();
+        this.ending = record.ending;
         game = new Board();
         pointer = 0;
-        makeGame();
+        //makeGame();
         displayBoard(game.pieces);
+    }
+
+    public void goBack(View view) {
+        Intent i = new Intent(RecordGame.this, MainActivity.class);
+        startActivity(i);
+    }
+
+    public Record getRecord(String name) {
+        for (Record r: this.recordList) {
+            System.out.println("the record in the list is: " + r.getName().trim());
+            if (r.getName().trim().equalsIgnoreCase(name.trim())) {
+                System.out.println("The record is: " + r);
+                return r;
+            }
+        }
+        System.out.println("null!");
+        return null;
     }
 
     public void makeGame() {
@@ -40,8 +84,44 @@ public class RecordGame extends AppCompatActivity {
     }
 
     public void nextMove(View view) {
-        makeMove(moves.get(pointer));
-        pointer++;
+        if (this.pointer >= this.moves.size()) {
+            endOfGame();
+        } else {
+            makeMove(moves.get(pointer));
+            pointer++;
+        }
+    }
+
+    public void endOfGame() {
+        String alertMessage;
+        if (this.ending == 0) {//resign
+            alertMessage = game.currentPlayer + " has resigned.";
+        } else if (this.ending == 1) {//draw
+            alertMessage = game.currentPlayer + " has asked for a draw.";
+        } else {//checkmate
+            alertMessage = game.currentPlayer + " has lost.";
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("End of Game");
+
+        builder.setMessage(alertMessage);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                goBackToMain();
+            }
+        });
+
+        builder.show();
+
+    }
+
+    public void goBackToMain() {
+        Intent i = new Intent(RecordGame.this, RecordController.class);
+        startActivity(i);
     }
 
     public void makeMove(Point[] move) {

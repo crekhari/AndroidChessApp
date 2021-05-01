@@ -62,9 +62,14 @@ public class PlayGame extends AppCompatActivity {
         //game.drawBoard();
         this.undoEnabled = false;
         undo.setEnabled(undoEnabled);
+        setResignAndDrawButtons();
         displayBoard(game.pieces);
     }
 
+    public void goBack(View view) {
+        Intent i = new Intent(PlayGame.this, MainActivity.class);
+        startActivity(i);
+    }
 
     /**
      * Undo's one move of the current player
@@ -72,6 +77,7 @@ public class PlayGame extends AppCompatActivity {
      * @param view
      */
     public void onUndoClick(View view) {
+        setResignAndDrawButtons();
         if (undoEnabled) {
             game.undoMove();
             displayBoard(game.pieces);
@@ -90,8 +96,9 @@ public class PlayGame extends AppCompatActivity {
      * @throws IOException
      */
     public void onResignClick(View view) throws IOException{
+        setResignAndDrawButtons();
         Toast.makeText(getApplicationContext(), game.currentPlayer + " has resigned. Game has ended.", Toast.LENGTH_SHORT).show();
-        addGametoRecord();
+        addGametoRecord(0);
     }
 
     /**
@@ -101,6 +108,7 @@ public class PlayGame extends AppCompatActivity {
      * @throws IOException
      */
     public void onAIClick(View view) throws IOException {
+        setResignAndDrawButtons();
         Point[] move = game.aiMove();
         makeMove(move);
         this.undoEnabled = true;
@@ -115,8 +123,9 @@ public class PlayGame extends AppCompatActivity {
      * @throws IOException
      */
     public void onDrawClick(View view) throws IOException {
+        setResignAndDrawButtons();
         Toast.makeText(getApplicationContext(), game.currentPlayer + " has called a draw. Game has ended.", Toast.LENGTH_SHORT).show();
-        addGametoRecord();
+        addGametoRecord(1);
     }
 
 
@@ -127,6 +136,7 @@ public class PlayGame extends AppCompatActivity {
      * @throws IOException
      */
     public void onClick(View view) throws IOException {
+        setResignAndDrawButtons();
         if (firstSelected == null) { //this is the first time they are touching the piece they want to move
             firstSelected = (ImageButton) view;
             String location = view.getResources().getResourceName(firstSelected.getId());
@@ -162,6 +172,7 @@ public class PlayGame extends AppCompatActivity {
      * @throws IOException
      */
     public void makeMove(Point[] move) throws IOException{
+        setResignAndDrawButtons();
         if (game.checkPromotion(move)) {
             game.promotion(new Queen(game.currentPlayer.toLowerCase(), 0, 0), move);
             //displayBoard(game.pieces);
@@ -186,14 +197,26 @@ public class PlayGame extends AppCompatActivity {
         if (game.checkmate()) {
             String winner = (game.currentPlayer.equalsIgnoreCase("black")) ? "White":"Black";
             Toast.makeText(getApplicationContext(), winner + " has won. Game has ended.", Toast.LENGTH_SHORT).show();
-            addGametoRecord();
+            addGametoRecord(2);
         }
     }
 
 
-    public void addGametoRecord() throws IOException {
+    public void addGametoRecord(int ending) throws IOException {
+        setResignAndDrawButtons();
+        String alertMessage;
+        if (ending == 0) {//resign
+            alertMessage = game.currentPlayer + " has resigned.";
+        } else if (ending == 1) {//draw
+            alertMessage = game.currentPlayer + " has asked for a draw.";
+        } else {//checkmate
+            alertMessage = game.currentPlayer + " has lost.";
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Save Game");
+
+        builder.setMessage(alertMessage + " Please enter a name to save the game.");
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -207,7 +230,7 @@ public class PlayGame extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String m_Text = input.getText().toString();
                 if (isUnique(m_Text.trim())) {
-                    Record r = new Record(m_Text.trim(), game.record);
+                    Record r = new Record(m_Text.trim(), game.record, ending);
                     recordList.add(r);
                     try {
                         Serialize.writeApp(recordList, getApplicationContext());
@@ -251,6 +274,7 @@ public class PlayGame extends AppCompatActivity {
      * @param pieces
      */
     public void displayBoard(ArrayList<Piece> pieces) {
+        setResignAndDrawButtons();
         clearBoard();
         for (int i = 0; i<8; i++) {
             for (int j = 0; j<8; j++) {
@@ -296,6 +320,16 @@ public class PlayGame extends AppCompatActivity {
         return (ImageButton)findViewById(getResources().getIdentifier(id, "id", this.getPackageName()));
     }
 
+
+    public void setResignAndDrawButtons() {
+        if (this.game.record.size() == 0) {
+            resign.setEnabled(false);
+            draw.setEnabled(false);
+        } else {
+            resign.setEnabled(true);
+            draw.setEnabled(true);
+        }
+    }
 
     /**
      * Allows the app to find the corresponding piece icon to be used when displaying the board.
