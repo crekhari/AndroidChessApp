@@ -18,7 +18,8 @@ import java.util.ArrayList;
 
 public class Serialize extends AppCompatActivity implements Serializable {
 
-    public static final String storeFile = "games.dat";
+    //public static final String storeDir = "data";
+    public static final String storeFile = "allgames.dat";
     public static ArrayList<Record> games = new ArrayList<Record>();
 
 
@@ -28,7 +29,7 @@ public class Serialize extends AppCompatActivity implements Serializable {
         oos.writeObject(games);
         oos.close();
         fos.close();
-        System.out.println("I did it?");
+       // System.out.println("I did it?");
     }
 
     public static ArrayList<Record> readApp(Context context) throws IOException, ClassNotFoundException {

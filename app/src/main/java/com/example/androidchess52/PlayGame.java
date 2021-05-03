@@ -59,7 +59,21 @@ public class PlayGame extends AppCompatActivity {
             recordList = new ArrayList<Record>();
         }
 
-        //game.drawBoard();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("New Game");
+
+        builder.setMessage("Welcome to Chess. To make a move please touch the starting piece and then the square you would like to move it to. Also, as the rules of Chess state, once you touch a piece you must move it!");
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+
+        builder.show();
+
         this.undoEnabled = false;
         undo.setEnabled(undoEnabled);
         setResignAndDrawButtons();
@@ -84,7 +98,7 @@ public class PlayGame extends AppCompatActivity {
             this.undoEnabled = false;
             undo.setEnabled(undoEnabled);
         } else {
-            Toast.makeText(getApplicationContext(), "You can only undo the last move!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "You can only undo the last move!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -97,7 +111,7 @@ public class PlayGame extends AppCompatActivity {
      */
     public void onResignClick(View view) throws IOException{
         setResignAndDrawButtons();
-        Toast.makeText(getApplicationContext(), game.currentPlayer + " has resigned. Game has ended.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), game.currentPlayer + " has resigned. Game has ended.", Toast.LENGTH_LONG).show();
         addGametoRecord(0);
     }
 
@@ -123,7 +137,6 @@ public class PlayGame extends AppCompatActivity {
      * @throws IOException
      */
     public void onDrawClick(View view) throws IOException {
-        setResignAndDrawButtons();
         Toast.makeText(getApplicationContext(), game.currentPlayer + " has called a draw. Game has ended.", Toast.LENGTH_SHORT).show();
         addGametoRecord(1);
     }
@@ -143,7 +156,7 @@ public class PlayGame extends AppCompatActivity {
             starting = location.substring(location.length()-2);
             if (firstSelected.getDrawable()==null || !game.getPieceAt(game.position(starting)).color.equalsIgnoreCase(game.currentPlayer)) {
                 firstSelected = null;
-                Toast.makeText(getApplicationContext(), "Please select a valid piece to move.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Please select a valid piece to move.", Toast.LENGTH_LONG).show();
             }
         } else { //this is the place they want to move the piece to
             lastSelected = (ImageButton) view;
@@ -157,7 +170,7 @@ public class PlayGame extends AppCompatActivity {
                 starting = null;
                 ending = null;
             } else {
-                Toast.makeText(getApplicationContext(), "Illegal move, try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Illegal move, try again.", Toast.LENGTH_LONG).show();
                 lastSelected = null;
                 ending = null;
             }
@@ -194,9 +207,13 @@ public class PlayGame extends AppCompatActivity {
         this.undoEnabled = true;
         undo.setEnabled(undoEnabled);
         game.printRecord();
+
+        if (game.check() != null && !game.checkmate())
+            Toast.makeText(getApplicationContext(), "Check", Toast.LENGTH_LONG).show();
+
         if (game.checkmate()) {
             String winner = (game.currentPlayer.equalsIgnoreCase("black")) ? "White":"Black";
-            Toast.makeText(getApplicationContext(), winner + " has won. Game has ended.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), winner + " has won. Game has ended.", Toast.LENGTH_LONG).show();
             addGametoRecord(2);
         }
     }
@@ -239,7 +256,7 @@ public class PlayGame extends AppCompatActivity {
                     }
                     switchScreens();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Saved game with that name already exists. Please enter a new name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Saved game with that name already exists. Please enter a new name!", Toast.LENGTH_LONG).show();
                 }
             }
         });
