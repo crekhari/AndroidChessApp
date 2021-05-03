@@ -46,7 +46,7 @@ public class RecordGame extends AppCompatActivity {
 
         String name = getIntent().getExtras().getString("game");
 
-        String[] tokens = name.split("--");
+        String[] tokens = name.split("\n");
         System.out.println(tokens[0]);
 
         Record record = getRecord(tokens[0]);
@@ -75,19 +75,12 @@ public class RecordGame extends AppCompatActivity {
         return null;
     }
 
-    public void makeGame() {
-        moves.add(new Point[]{new Point(6,4), new Point(4,4)});
-        moves.add(new Point[]{new Point(1,5), new Point(3,5)});
-        moves.add(new Point[]{new Point(6,3), new Point(4,3)});
-        moves.add(new Point[]{new Point(1,6), new Point(3,6)});
-        moves.add(new Point[]{new Point(7,3), new Point(3,7)});
-    }
-
     public void nextMove(View view) {
         if (this.pointer >= this.moves.size()) {
             endOfGame();
         } else {
             makeMove(moves.get(pointer));
+            System.out.println(moves.get(pointer)[0] + " " + moves.get(pointer)[1]);
             pointer++;
         }
     }
@@ -167,7 +160,7 @@ public class RecordGame extends AppCompatActivity {
                     found.getDrawable();
                     found.setImageResource(0);
                 } catch (Exception e) {
-                    System.out.println("there is no image here!");
+                    //System.out.println("there is no image here!");
                 }
             }
         }

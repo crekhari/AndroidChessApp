@@ -433,7 +433,7 @@ public class Board implements Serializable {
         Point[] aimove = new Point[2];
         aimove[0] = random.location;
         aimove[1] = randomMoves.get(0);
-        this.record.add(aimove);
+        //this.record.add(aimove);
 
         return aimove;
 
