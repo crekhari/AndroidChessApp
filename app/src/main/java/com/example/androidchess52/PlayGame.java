@@ -154,7 +154,7 @@ public class PlayGame extends AppCompatActivity {
             firstSelected = (ImageButton) view;
             String location = view.getResources().getResourceName(firstSelected.getId());
             starting = location.substring(location.length()-2);
-            if (firstSelected.getDrawable()==null || !game.getPieceAt(game.position(starting)).color.equalsIgnoreCase(game.currentPlayer)) {
+            if (firstSelected.getDrawable()==null || !game.getPieceAt(game.position(starting)).color.equalsIgnoreCase(game.currentPlayer) || game.getPieceAt(game.position(starting)).getMoves(game, true).size()==0) {
                 firstSelected = null;
                 Toast.makeText(getApplicationContext(), "Please select a valid piece to move.", Toast.LENGTH_LONG).show();
             }
